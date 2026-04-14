@@ -69,5 +69,45 @@ public class Traverse {
     v45.neighbors = new ArrayList<>(List.of(v23));
     v23.neighbors = new ArrayList<>(List.of());
     v67.neighbors = new ArrayList<>(List.of(v91));
+
+    System.out.println(reachable(graph, 34, 34));
+    // printGossipers(grace);
   }
+
+  public static void printGossipers(Person current){
+      Set<Person> seen = new HashSet<>();
+      printGossipers(current, seen);
+    }
+
+    private static void printGossipers(Person current, Set<Person> seen){
+      if(seen.contains(current)) return;
+      
+      seen.add(current);
+
+      System.out.println(current.getName());
+
+      for(Person confidant : current.getConfidants()){
+        printGossipers(confidant, seen);
+      }
+    }
+
+    public static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end){
+      return reachable(graph, start, end, new HashSet<>());
+    }
+
+    private static boolean reachable(Map<Integer, Set<Integer>> graph, int start, int end, Set<Integer> seen){
+      if(start == end) return true;
+
+      if(seen.contains(start)) return false;
+
+      seen.add(start);
+
+      for(int neighbor : graph.get(start)){
+        if(reachable(graph, neighbor, end, seen)){
+          return true;
+        }
+      }
+
+      return false;
+    }
 }
